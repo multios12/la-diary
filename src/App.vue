@@ -1,57 +1,42 @@
 <template>
   <v-app>
-    <v-app-bar app color="primary" dark>
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
-
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
-
-      <v-spacer></v-spacer>
-
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
+    <v-app-bar app dark>
+      <v-app-bar-title>diary</v-app-bar-title>
     </v-app-bar>
 
     <v-main>
-      <HelloWorld />
+      <v-container>
+        <v-card>
+          <v-card-title><month-field v-model="month" /></v-card-title>
+          <v-card-text>
+            <v-row>
+              <v-col><day-select v-model="day" /></v-col>
+              <v-col>
+                <v-text-field label="outline"></v-text-field>
+              </v-col>
+              <v-col>
+                <v-btn>send</v-btn>
+              </v-col>
+            </v-row>
+            <v-list></v-list>
+          </v-card-text>
+        </v-card>
+      </v-container>
     </v-main>
   </v-app>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-import HelloWorld from "./components/HelloWorld.vue";
+import Component from "vue-class-component";
+import MonthField from "./components/MonthField.vue";
+import DaySelect from "./components/DaySelect.vue";
 
-export default Vue.extend({
-  name: "App",
-
-  components: {
-    HelloWorld,
-  },
-
-  data: () => ({
-    //
-  }),
-});
+@Component({ components: { MonthField, DaySelect } })
+export default class App extends Vue {
+  private month = new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+    .toISOString()
+    .substr(0, 7);
+  private day = new Date();
+}
 </script>
