@@ -1,28 +1,32 @@
 package main
 
 import (
+	"embed"
 	"flag"
 	"os"
 	"path/filepath"
 
-	"github.com/multios12/la-diary/routes"
+	modules "github.com/multios12/la-diary/modules"
 )
 
 var proxyMode bool
 
+//go:embed static/*
+var local embed.FS
+
 // コンテキスト
 func main() {
-	flag.StringVar(&routes.DataDir, "dir", "./data", "data directory")
+	flag.StringVar(&modules.DataDir, "dir", "./data", "data directory")
 	flag.BoolVar(&proxyMode, "ReverseProxyMode", false, "reverse proxy mode")
 	port := flag.String("port", ":3000", "server port")
 	flag.Parse()
 
-	routes.DataDir, _ = filepath.Abs(routes.DataDir)
-	_, err := os.Stat(routes.DataDir)
+	modules.DataDir, _ = filepath.Abs(modules.DataDir)
+	_, err := os.Stat(modules.DataDir)
 	if err != nil {
-		os.Mkdir(routes.DataDir, 0777)
+		os.Mkdir(modules.DataDir, 0777)
 	}
 
-	router := routes.Initial(proxyMode)
+	router := modules.Initial(proxyMode, local)
 	router.Run(*port)
 }

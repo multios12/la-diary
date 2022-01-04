@@ -1,9 +1,9 @@
 <template>
-  <v-select v-model="value" :items="days" />
+  <v-select v-model="day" :items="days" />
 </template>
 <script lang="ts">
 import Component from "vue-class-component";
-import { Model, Prop, Vue } from "vue-property-decorator";
+import { Model, Prop, Vue, Watch } from "vue-property-decorator";
 
 @Component
 export default class DaySelect extends Vue {
@@ -11,15 +11,18 @@ export default class DaySelect extends Vue {
   @Prop({ type: String }) Month!: string;
   days: string[] = [];
 
-  get value() {
-    return this.day;
+  beforeUpdate() {
+    console.log("fired:beforeUpdate");
+    this.setDays(this.day);
   }
-  set value(v: string) {
-    this.$emit("update", v);
-    this.day = v;
+  @Watch("day")
+  dayChanged(value: string, oldValue: string) {
+    this.$emit("update", value);
+    this.day = value;
+    this.setDays(value);
   }
 
-  sestDays(v: string) {
+  public setDays(v: string) {
     if (this.days.length > 0) {
       const old = this.days[0];
       if (old.substring(0, 7) == v.substring(0, 7)) {

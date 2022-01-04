@@ -12,7 +12,7 @@ import (
 var DataDir string
 
 func ReadLine(day string) lineModel {
-	lines := ReadLineFile(day[0:4] + day[5:7])
+	lines := ReadMonthFile(day[0:4] + day[5:7])
 	for _, l := range lines {
 		if day == l.Day {
 			return l
@@ -23,20 +23,20 @@ func ReadLine(day string) lineModel {
 
 func WriteLine(day string, memo string) {
 	month := day[0:4] + day[5:7]
-	lines := ReadLineFile(month)
+	lines := ReadMonthFile(month)
 	for i, l := range lines {
 		if day == l.Day {
 			lines[i].Memo = memo
-			writeLineFile(month, lines)
+			writeMonthFile(month, lines)
 			return
 		}
 	}
 	lines = append(lines, lineModel{day, memo})
-	writeLineFile(month, lines)
+	writeMonthFile(month, lines)
 	return
 }
 
-func ReadLineFile(month string) []lineModel {
+func ReadMonthFile(month string) []lineModel {
 	p := month + ".txt"
 	p = filepath.Join(DataDir, p)
 
@@ -73,8 +73,8 @@ func ReadLineFile(month string) []lineModel {
 	return lines
 }
 
-func writeLineFile(month string, lines []lineModel) {
-	sort.Slice(lines, func(i, j int) bool { return lines[i].Day < lines[j].Day })
+func writeMonthFile(month string, lines []lineModel) {
+	sort.Slice(lines, func(i, j int) bool { return lines[i].Day > lines[j].Day })
 
 	p := month + ".txt"
 	p = filepath.Join(DataDir, p)

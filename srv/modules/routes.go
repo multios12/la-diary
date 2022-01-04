@@ -1,21 +1,32 @@
 package routes
 
 import (
+	"embed"
 	"net/http"
+	"net/http/httputil"
+	"net/url"
 
 	"github.com/gin-gonic/gin"
 )
 
 // gin.Engineインスタンスにルーティングを設定して返す
-func Initial(proxyMode bool) *gin.Engine {
+func Initial(proxyMode bool, static embed.FS) *gin.Engine {
 	router := gin.Default()
 
-	if proxyMode {
-		router.GET("/", devReverseProxy)
-		router.GET("/js/:file", devReverseProxy)
-	} else {
-
+	var f = func(c *gin.Context) {
+		if proxyMode {
+			remote, _ := url.Parse("http://localhost:8080")
+			proxy := httputil.NewSingleHostReverseProxy(remote)
+			proxy.ServeHTTP(c.Writer, c.Request)
+		} else {
+			c.FileFromFS("static"+c.Request.URL.Path, http.FS(static))
+		}
 	}
+
+	router.GET("/", f)
+	router.GET("/favicon.ico", f)
+	router.GET("/css/:file", f)
+	router.GET("/js/:file", f)
 
 	router.GET("/api/:year/:month", getMonth)
 	router.GET("/api/:year/:month/:day", getDay)
@@ -36,7 +47,7 @@ func getDay(c *gin.Context) {
 
 func getMonth(c *gin.Context) {
 	day := c.Param("year") + c.Param("month")
-	l := ReadLineFile(day)
+	l := ReadMonthFile(day)
 	if len(l) == 0 {
 		c.Status(404)
 		return
