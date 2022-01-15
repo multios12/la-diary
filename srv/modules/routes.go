@@ -15,7 +15,7 @@ func Initial(proxyMode bool, static embed.FS) *gin.Engine {
 
 	var f = func(c *gin.Context) {
 		if proxyMode {
-			remote, _ := url.Parse("http://localhost:8080")
+			remote, _ := url.Parse("http://localhost:3000")
 			proxy := httputil.NewSingleHostReverseProxy(remote)
 			proxy.ServeHTTP(c.Writer, c.Request)
 		} else {
@@ -25,8 +25,7 @@ func Initial(proxyMode bool, static embed.FS) *gin.Engine {
 
 	router.GET("/", f)
 	router.GET("/favicon.ico", f)
-	router.GET("/css/:file", f)
-	router.GET("/js/:file", f)
+	router.GET("/static/:dir/:file", f)
 
 	router.GET("/api/:year/:month", getMonth)
 	router.GET("/api/:year/:month/:day", getDay)

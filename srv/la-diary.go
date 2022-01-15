@@ -18,7 +18,7 @@ var local embed.FS
 func main() {
 	flag.StringVar(&modules.DataDir, "dir", "./data", "data directory")
 	flag.BoolVar(&proxyMode, "ReverseProxyMode", false, "reverse proxy mode")
-	port := flag.String("port", ":3000", "server port")
+	port := flag.String("port", ":8080", "server port")
 	flag.Parse()
 
 	modules.DataDir, _ = filepath.Abs(modules.DataDir)
