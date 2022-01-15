@@ -9,19 +9,18 @@
             "type": "pwa-chrome",
             "request": "launch",
             "reAttach": true,
-            "url": "http://localhost",
+            "url": "http://localhost:3000",
             "webRoot": "${workspaceFolder}",
             "preLaunchTask": "react-start",
             "postDebugTask": "terminate-react-start",
         },
-
         {
             "name": "go API Server",
             "type": "go",
             "request": "launch",
             "mode": "auto",
             "program": "srv/la-diary.go",
-            "args": [ "-port", ":80", "-ReverseProxyMode"]
+            "args": ["-port", ":3001" ],
         }
     ]
 }
