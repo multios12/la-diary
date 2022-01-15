@@ -3,8 +3,8 @@
 
 ## デバッグ実行
 vscode上での実行を前提。chromeを利用
-フロントデバッグサーバ：ポート
-バックエンドサーバ：ポート80
+フロントデバッグサーバ：ポート3001
+バックエンドサーバ：ポート3000
 
 ### 実行手順
 1. 実行とデバッグで「go API Server」を選択、実行
@@ -15,6 +15,11 @@ vscode上での実行を前提。chromeを利用
 ## initialize setting
 > npm i -g yarn
 
+## create new react project
+> create-react-app
+
 ## create new go project
+> mkdir srv
+> cd srv
 > go mod init main
 > go get github.com/gin-gonic/gin
