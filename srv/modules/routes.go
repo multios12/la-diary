@@ -3,6 +3,7 @@ package routes
 import (
 	"embed"
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -54,6 +55,10 @@ func postDay(c *gin.Context) {
 	if err := c.ShouldBindJSON(&line); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
+	}
+	line.Memo = strings.TrimSpace(line.Memo)
+	if line.Memo == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "memo is not found."})
 	}
 
 	WriteLine(day, line.Memo)

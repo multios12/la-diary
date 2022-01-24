@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 	"sort"
+	"strings"
 )
 
 var DataDir string
@@ -24,14 +25,17 @@ func ReadLine(day string) lineModel {
 func WriteLine(day string, memo string) {
 	month := day[0:4] + day[5:7]
 	lines := ReadMonthFile(month)
+	flag := false
 	for i, l := range lines {
 		if day == l.Day {
 			lines[i].Memo = memo
-			writeMonthFile(month, lines)
-			return
+			flag = true
 		}
+		lines[i].Memo = strings.TrimSpace(lines[i].Memo)
 	}
-	lines = append(lines, lineModel{day, memo})
+	if flag {
+		lines = append(lines, lineModel{day, memo})
+	}
 	writeMonthFile(month, lines)
 	return
 }
