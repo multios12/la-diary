@@ -19,7 +19,7 @@
             "type": "go",
             "request": "launch",
             "mode": "auto",
-            "program": "srv/la-diary.go",
+            "program": "srv/.",
             "args": ["-port", ":3001" ],
         }
     ]

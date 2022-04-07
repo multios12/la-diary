@@ -17,6 +17,7 @@ vscode上での実行を前提。chromeを利用
 
 ## create new react project
 > create-react-app
+> yarn add react-router-dom
 
 ## create new go project
 > mkdir srv

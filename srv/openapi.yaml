@@ -1,0 +1,128 @@
+openapi: 3.0.0
+info:
+  title: la-diary API
+  description: A simple diary of API.
+  version: 1.0.0
+servers:
+  - url: https://{host}:{port}/
+    description: Development server
+paths:
+  /api/{year}/{month}:
+    get:
+      tags:
+        - months
+      summary: ラインリストを取得する
+      description: 指定された年月のラインリストを返す
+      parameters: 
+        - name: year
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: month
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A JSON array of line model
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  $ref: '#/components/schemas/LineModel'
+                example:
+                  - day: 2022-10-01
+                    memo: example memo1
+                  - day: 2022-10-02
+                    memo: example memo2
+  /api/{year}/{month}/{day}:
+    get:
+      tags: 
+        - days
+      summary: ラインを取得する
+      description: 指定された日付のラインモデルを返す
+      parameters: 
+        - name: year
+          in: path
+          required: true
+          schema:
+            type: number
+            pattern: "[0-9]{4}"
+        - name: month
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: "[0-9]{2}"
+        - name: day
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: "[0-9]{2}"
+      requestBody:
+        description: user to create
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LineModel'
+            example:
+              day: '2022-10-01'
+              memo: exampe memo
+      responses:
+        '200':
+          description: 正常取得
+    post:
+      tags:
+        - days
+      summary: ラインを登録する
+      description: 指定された日付にラインを登録・更新する
+      parameters: 
+        - name: year
+          in: path
+          required: true
+          schema:
+            type: number
+            pattern: "[0-9]{4}"
+        - name: month
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: "[0-9]{2}"
+        - name: day
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: "[0-9]{2}"
+      responses:
+        '200':
+          description: 正常登録完了
+components:
+  schemas:
+    LineModel:
+      type: object
+      required:
+        - day
+        - memo
+      properties:
+        day:
+          description: 日付
+          type: string
+        memo:
+          description: 本文
+          type: string
+security: 
+  - api_key: []
+tags:
+  - name: months
+    description: 年月ごとにラインモデルへのアクセスを提供する
+  - name: days
+    description: 日付ごとにラインモデルへのアクセスを提供する
+externalDocs:
+  description: Find more info here
+  url: https://example.com
