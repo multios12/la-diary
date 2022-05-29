@@ -1,0 +1,25 @@
+{
+	"name": "Dev Container la-diary",
+	"build": {
+		"context": "../",
+		"dockerfile": "Dockerfile"
+	},
+	"settings": {
+        "editor.codeActionsOnSave": {
+            "source.fixAll.eslint": true // ファイル保存時にESLintでフォーマット
+        }		
+	},
+	"extensions": [
+       "golang.go",
+        "reliutg.bulma-css-class-completion",
+        "dbaeumer.vscode-eslint"
+    ],
+	"forwardPorts": [
+		3000,
+        3001
+	],
+	"mounts": [
+		"type=volume,source=${containerWorkspaceFolderBasename}-node_modules,target=${containerWorkspaceFolder}/node_modules"
+	],
+	"postCreateCommand": "yarn install"
+}
