@@ -9,21 +9,21 @@
     "srvStart": "go run srv/la-diary.go -port :80"
   },
   "dependencies": {
-    "@date-io/date-fns": "^2.11.0",
-    "axios": "^0.26.1",
-    "bulma": "^0.9.3",
+    "@date-io/date-fns": "^2.14.0",
+    "axios": "^0.27.2",
+    "bulma": "^0.9.4",
     "date-fns": "2.28.0",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.2"
   },
   "devDependencies": {
-    "@types/node": "^16.11.19",
-    "@types/react": "^18.0.5",
-    "@types/react-dom": "^18.0.1",
-    "typescript": "^4.5.4"
+    "@types/node": "^16.11.36",
+    "@types/react": "^18.0.9",
+    "@types/react-dom": "^18.0.5",
+    "typescript": "^4.7.2"
   },
   "eslintConfig": {
     "extends": [
