@@ -1,9 +1,6 @@
+import 'bulma/css/bulma.css';
 import { useEffect, useState } from 'react';
-import './App.css';
 import axios from "axios";
-import { LocalizationProvider, DatePicker } from '@mui/lab';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import { Button, Card, createTheme, Grid, List, ListItem, ListItemButton, MenuItem, Select, TextField, ThemeProvider } from '@mui/material';
 import AppBar from "./MuAppBar"
 import Utils from "./Utils";
 
@@ -12,11 +9,9 @@ type listType = { WritedMonths: [], Lines: lineType[] };
 
 /** App アプリケーションメインコンポーネント */
 export default function App() {
-
-  const theme = createTheme({ palette: { mode: 'dark' } })
   const [date, setDate] = useState<Date | null>(new Date());
   const [memo, setMemo] = useState("");
-  const [items, setItems] = useState({ WritedMonths: [], Lines: new Array<lineType>() });
+  const [items, setItems] = useState<listType>({ WritedMonths: [], Lines: new Array<lineType>() });
   const [selectMonth, setSelectMonth] = useState("2022-02")
 
   /** 送信 クリックイベント */
@@ -56,9 +51,9 @@ export default function App() {
     }
 
     var d = e.getFullYear() + "-" + (e.getMonth() + 1)
-    var a = items?.WritedMonths?.filter((v,i) => v===d)
+    var a = items?.WritedMonths?.filter((v, i) => v === d)
 
-    if(a.length == 0 && items.WritedMonths.length > 0) {
+    if (a.length == 0 && items.WritedMonths.length > 0) {
       setSelectMonth(items.WritedMonths[0])
     } else {
       setSelectMonth(d)
@@ -68,31 +63,29 @@ export default function App() {
   useEffect(() => { showLines() }, [])
 
   return (
-    <ThemeProvider theme={theme}>
-      <div className="App">
-        <AppBar />
-        <Card sx={{ m: 1 }}>
-          <Grid sx={{ m: 1 }} container direction="column" alignItems="center">
-            <Grid item>
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DatePicker label="Date" value={date} onChange={e => setDate2(e)}
-                  inputFormat="yyyy/MM/dd"
-                  mask="____/__/__"
-                  renderInput={(params) => <TextField {...params} />} />
-              </LocalizationProvider>
-              <TextField label="Memo" value={memo} InputLabelProps={{ shrink: true }} onChange={e => setMemo(e.target.value)} />
-              <Button variant="outlined" onClick={sendButtonClick}>send</Button>
-            </Grid>
-          </Grid>
-        </Card>
-        <Card sx={{ m: 1 }}>
-          <Select label="month" value={selectMonth} onChange={e => setSelectMonth(e.target.value)}>
-            {items.WritedMonths.map((v) => <MenuItem value={v}>{v}</MenuItem>)}
-          </Select>
-          <List>
-            {items.Lines.map((v) => <ListItem><ListItemButton onClick={e => listClick(e, v)}>{v.Day} {v.Memo}</ListItemButton></ListItem>)}
-          </List>
-        </Card>
+    <div>
+      <AppBar />
+
+      <div className="card px-10">
+        <div className="card-header">
+          <input type="date" onChange={e => setDate2(e.target.value)} />
+          <input type="text" value={memo} onChange={e => setMemo(e.target.value)} />
+          <button className='button' onClick={sendButtonClick}>send</button>
+        </div>
+        <div className="card-content">
+          <div className="select">
+            <select value={selectMonth} onChange={e => setSelectMonth(e.target.value)}>
+              {items.WritedMonths.map((v) => <option value={v}>{v}</option>)}
+            </select>
+          </div>
+          <table>
+            <tbody>
+              {items.Lines.map((v) => <tr onClick={e => listClick(e, v)}><td>{v.Day} {v.Memo}</td></tr>)}
+            </tbody>
+          </table>
+        </div>
       </div>
-    </ThemeProvider>)
+    </div>
+
+  )
 }
