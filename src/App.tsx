@@ -5,7 +5,7 @@ import AppBar from "./MuAppBar"
 import Utils from "./Utils";
 
 type lineType = { Day: string; Memo: string; };
-type listType = { WritedMonths: [], Lines: lineType[] };
+type listType = { WritedMonths: string[], Lines: lineType[] };
 
 /** App アプリケーションメインコンポーネント */
 export default function App() {
@@ -27,12 +27,12 @@ export default function App() {
 
   /** リストクリックイベント */
   const listClick = (e: any, l: lineType) => {
-    const y = Number(l.Day.substring(0, 4))
-    const m = Number(l.Day.substring(5, 7)) - 1
-    const d = Number(l.Day.substring(8, 10))
+    // const y = Number(l.Day.substring(0, 4))
+    // const m = Number(l.Day.substring(5, 7)) - 1
+    // const d = Number(l.Day.substring(8, 10))
 
-    const day = new Date(y, m, d)
-    setDate2(day)
+    // const day = new Date(y, m, d)
+    setDate2(l.Day)
     setMemo(l.Memo)
   }
 
@@ -44,7 +44,9 @@ export default function App() {
     })
   }
 
-  const setDate2 = (e: Date | null) => {
+  const setDate2 = (value: string) => {
+    let e = value === "" ? null : new Date(value)
+
     setDate(e)
     if (e == null) {
       e = new Date()
@@ -53,8 +55,9 @@ export default function App() {
     var d = e.getFullYear() + "-" + (e.getMonth() + 1)
     var a = items?.WritedMonths?.filter((v, i) => v === d)
 
-    if (a.length == 0 && items.WritedMonths.length > 0) {
-      setSelectMonth(items.WritedMonths[0])
+    if (a.length === 0 && items.WritedMonths.length > 0) {
+      d = items.WritedMonths[0]
+      setSelectMonth(d)
     } else {
       setSelectMonth(d)
     }
@@ -77,6 +80,7 @@ export default function App() {
             <select value={selectMonth} onChange={e => setSelectMonth(e.target.value)}>
               {items.WritedMonths.map((v) => <option value={v}>{v}</option>)}
             </select>
+            aj
           </div>
           <table>
             <tbody>

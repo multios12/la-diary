@@ -4,22 +4,26 @@
 		"context": "../",
 		"dockerfile": "Dockerfile"
 	},
+	"workspaceFolder": "/home/app",
 	"settings": {
-        "editor.codeActionsOnSave": {
-            "source.fixAll.eslint": true // ファイル保存時にESLintでフォーマット
-        }		
+		"editor.codeActionsOnSave": {
+			"editor.formatOnSave": true, // ファイル保存時にフォーマット
+			"files.trimTrailingWhitespace": true, // ファイル保存時に行末の空白自動削除
+			"source.fixAll.eslint": true // ファイル保存時にESLintでフォーマット
+		}
 	},
 	"extensions": [
-       "golang.go",
-        "reliutg.bulma-css-class-completion",
-        "dbaeumer.vscode-eslint"
-    ],
+		"golang.go",
+		"reliutg.bulma-css-class-completion",
+		"dbaeumer.vscode-eslint"
+	],
 	"forwardPorts": [
 		3000,
-        3001
+		3001
 	],
 	"mounts": [
-		"type=volume,source=${containerWorkspaceFolderBasename}-node_modules,target=${containerWorkspaceFolder}/node_modules"
+		"type=volume,source=${containerWorkspaceFolderBasename}-source,target=/home/app"
+		// "type=volume,source=${containerWorkspaceFolderBasename}-node_modules,target=${containerWorkspaceFolder}/node_modules"
 	],
 	"postCreateCommand": "yarn install"
 }
